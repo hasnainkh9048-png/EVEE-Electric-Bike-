@@ -6,6 +6,9 @@
     <title>EVEE Electric Bike Scanning Data</title>
 
     <link rel="stylesheet" href="style.css">
+
+    <!-- Excel Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 
 <body>
@@ -40,7 +43,6 @@
 
     <div class="grid">
 
-        <input type="text" id="recordId" placeholder="Record ID" readonly>
         <input type="date" id="scanDate">
         <input type="time" id="scanTime">
 
@@ -51,9 +53,12 @@
             <option value="">Bike Type</option>
             <option value="Lithium">Lithium</option>
             <option value="Graphene">Graphene</option>
+            <option value="Backrest">Backrest</option>
+            <option value="Rearbox">Rearbox</option>
         </select>
 
         <input type="text" id="color" placeholder="Color">
+
         <input type="text" id="chassisNumber" placeholder="Chassis Number">
         <input type="text" id="motorNumber" placeholder="Motor Number">
 
@@ -74,11 +79,12 @@
     <button id="lastBtn">Last</button>
 
     <button id="searchBtn">Search</button>
+    <button id="exportBtn">Export Excel</button>
 
 </section>
 
 <section class="search-area">
-    <input type="text" id="searchInput" placeholder="Search chassis / motor / ID">
+    <input type="text" id="searchInput" placeholder="Search chassis / motor">
 </section>
 
 <footer>
