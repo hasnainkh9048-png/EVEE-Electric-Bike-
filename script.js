@@ -1,42 +1,34 @@
 let bikes = [];
 let currentIndex = -1;
 
-// Load existing data
+// Load
 window.onload = function () {
     loadData();
     updateDashboard();
-    generateRecordId();
     setDateTime();
 };
 
-// Auto ID
-function generateRecordId() {
-    document.getElementById("recordId").value = "EVEE-" + Date.now();
-}
-
-// Date & Time
+// Date Time
 function setDateTime() {
     let now = new Date();
-
     document.getElementById("scanDate").value = now.toISOString().split("T")[0];
-    document.getElementById("scanTime").value = now.toTimeString().split(" ")[0].slice(0,5);
+    document.getElementById("scanTime").value = now.toTimeString().slice(0,5);
 }
 
-// Save Record
+// Save
 document.getElementById("saveBtn").addEventListener("click", function () {
 
-    let bike = getFormData();
-
+    let bike = getData();
     if (!bike) return;
 
     // Duplicate check
-    let duplicate = bikes.find(b =>
+    let dup = bikes.find(b =>
         b.chassisNumber === bike.chassisNumber ||
         b.motorNumber === bike.motorNumber
     );
 
-    if (duplicate) {
-        alert("Duplicate Chassis or Motor Number found!");
+    if (dup) {
+        alert("Duplicate chassis or motor number!");
         return;
     }
 
@@ -46,14 +38,13 @@ document.getElementById("saveBtn").addEventListener("click", function () {
     saveData();
     updateDashboard();
     clearForm();
-    generateRecordId();
     setDateTime();
 
-    alert("Bike Saved Successfully!");
+    alert("Saved!");
 });
 
-// Get form data
-function getFormData() {
+// Get Data
+function getData() {
 
     let modelName = document.getElementById("modelName").value;
     let batteryType = document.getElementById("batteryType").value;
@@ -63,12 +54,11 @@ function getFormData() {
     let motorNumber = document.getElementById("motorNumber").value;
 
     if (!modelName || !bikeType || !chassisNumber || !motorNumber) {
-        alert("Please fill required fields!");
+        alert("Fill required fields!");
         return null;
     }
 
     return {
-        recordId: document.getElementById("recordId").value,
         date: document.getElementById("scanDate").value,
         time: document.getElementById("scanTime").value,
         modelName,
@@ -80,25 +70,19 @@ function getFormData() {
     };
 }
 
-// Save to localStorage
+// Save Local
 function saveData() {
     localStorage.setItem("bikes", JSON.stringify(bikes));
 }
 
-// Load from localStorage
+// Load
 function loadData() {
     let data = localStorage.getItem("bikes");
-    if (data) {
-        bikes = JSON.parse(data);
-    }
+    if (data) bikes = JSON.parse(data);
 }
 
-// Clear form
-document.getElementById("clearBtn").addEventListener("click", function () {
-    clearForm();
-    generateRecordId();
-    setDateTime();
-});
+// Clear
+document.getElementById("clearBtn").addEventListener("click", clearForm);
 
 function clearForm() {
     document.getElementById("modelName").value = "";
@@ -110,106 +94,113 @@ function clearForm() {
 }
 
 // Navigation
-document.getElementById("nextBtn").addEventListener("click", function () {
+document.getElementById("nextBtn").onclick = () => {
     if (currentIndex < bikes.length - 1) {
         currentIndex++;
-        showData();
+        show();
     }
-});
+};
 
-document.getElementById("prevBtn").addEventListener("click", function () {
+document.getElementById("prevBtn").onclick = () => {
     if (currentIndex > 0) {
         currentIndex--;
-        showData();
+        show();
     }
-});
+};
 
-document.getElementById("firstBtn").addEventListener("click", function () {
-    if (bikes.length > 0) {
-        currentIndex = 0;
-        showData();
-    }
-});
+document.getElementById("firstBtn").onclick = () => {
+    currentIndex = 0;
+    show();
+};
 
-document.getElementById("lastBtn").addEventListener("click", function () {
-    if (bikes.length > 0) {
-        currentIndex = bikes.length - 1;
-        showData();
-    }
-});
+document.getElementById("lastBtn").onclick = () => {
+    currentIndex = bikes.length - 1;
+    show();
+};
 
-// Show record
-function showData() {
-    let bike = bikes[currentIndex];
+// Show
+function show() {
+    let b = bikes[currentIndex];
 
-    document.getElementById("recordId").value = bike.recordId;
-    document.getElementById("scanDate").value = bike.date;
-    document.getElementById("scanTime").value = bike.time;
-    document.getElementById("modelName").value = bike.modelName;
-    document.getElementById("batteryType").value = bike.batteryType;
-    document.getElementById("bikeType").value = bike.bikeType;
-    document.getElementById("color").value = bike.color;
-    document.getElementById("chassisNumber").value = bike.chassisNumber;
-    document.getElementById("motorNumber").value = bike.motorNumber;
+    document.getElementById("scanDate").value = b.date;
+    document.getElementById("scanTime").value = b.time;
+    document.getElementById("modelName").value = b.modelName;
+    document.getElementById("batteryType").value = b.batteryType;
+    document.getElementById("bikeType").value = b.bikeType;
+    document.getElementById("color").value = b.color;
+    document.getElementById("chassisNumber").value = b.chassisNumber;
+    document.getElementById("motorNumber").value = b.motorNumber;
 
     updateDashboard();
 }
 
 // Delete
-document.getElementById("deleteBtn").addEventListener("click", function () {
+document.getElementById("deleteBtn").onclick = () => {
 
     if (currentIndex < 0) return;
 
-    let confirmDelete = confirm("Are you sure you want to delete this record?");
-
-    if (!confirmDelete) return;
+    if (!confirm("Delete this record?")) return;
 
     bikes.splice(currentIndex, 1);
-
-    if (currentIndex >= bikes.length) {
-        currentIndex = bikes.length - 1;
-    }
 
     saveData();
     updateDashboard();
     clearForm();
-
-    alert("Record Deleted!");
-});
+};
 
 // Search
-document.getElementById("searchBtn").addEventListener("click", function () {
+document.getElementById("searchBtn").onclick = () => {
 
-    let query = document.getElementById("searchInput").value.toLowerCase();
+    let q = document.getElementById("searchInput").value.toLowerCase();
 
-    let index = bikes.findIndex(b =>
-        b.chassisNumber.toLowerCase() === query ||
-        b.motorNumber.toLowerCase() === query ||
-        b.recordId.toLowerCase() === query
+    let i = bikes.findIndex(b =>
+        b.chassisNumber.toLowerCase() === q ||
+        b.motorNumber.toLowerCase() === q
     );
 
-    if (index !== -1) {
-        currentIndex = index;
-        showData();
+    if (i !== -1) {
+        currentIndex = i;
+        show();
     } else {
-        alert("No record found!");
+        alert("Not found");
     }
-});
+};
 
-// Dashboard update
+// Dashboard
 function updateDashboard() {
+
     document.getElementById("totalBikes").innerText = bikes.length;
 
-    let lithium = bikes.filter(b => b.bikeType === "Lithium").length;
-    let graphene = bikes.filter(b => b.bikeType === "Graphene").length;
+    let l = bikes.filter(b => b.bikeType === "Lithium").length;
+    let g = bikes.filter(b => b.bikeType === "Graphene").length;
 
-    document.getElementById("lithiumCount").innerText = lithium;
-    document.getElementById("grapheneCount").innerText = graphene;
+    document.getElementById("lithiumCount").innerText = l;
+    document.getElementById("grapheneCount").innerText = g;
 
-    if (currentIndex >= 0) {
-        document.getElementById("recordPosition").innerText =
-            (currentIndex + 1) + " / " + bikes.length;
-    } else {
-        document.getElementById("recordPosition").innerText = "0 / " + bikes.length;
-    }
+    document.getElementById("recordPosition").innerText =
+        bikes.length ? (currentIndex + 1) + " / " + bikes.length : "0 / 0";
 }
+
+// Export Excel
+document.getElementById("exportBtn").onclick = () => {
+
+    if (!bikes.length) return alert("No data");
+
+    let data = bikes.map(b => ({
+        Date: b.date,
+        Time: b.time,
+        Model: b.modelName,
+        Battery: b.batteryType,
+        Type: b.bikeType,
+        Color: b.color,
+        Chassis: b.chassisNumber,
+        Motor: b.motorNumber
+    }));
+
+    let ws = XLSX.utils.json_to_sheet(data);
+    let wb = XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(wb, ws, "EVEE Bikes");
+
+    XLSX.writeFile(wb, "EVEE_Bikes.xlsx");
+};
