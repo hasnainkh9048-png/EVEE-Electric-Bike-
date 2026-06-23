@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVEE Electric Bike Scanning Data</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>EVEE Electric Bike Scanning Data</h1>
+</header>
+
+<section class="dashboard">
+    <div class="card">
+        <h3>Total Bikes</h3>
+        <p id="totalBikes">0</p>
+    </div>
+
+    <div class="card">
+        <h3>Lithium</h3>
+        <p id="lithiumCount">0</p>
+    </div>
+
+    <div class="card">
+        <h3>Graphene</h3>
+        <p id="grapheneCount">0</p>
+    </div>
+
+    <div class="card">
+        <h3>Record</h3>
+        <p id="recordPosition">0 / 0</p>
+    </div>
+</section>
+
+<section class="form-container">
+
+    <div class="grid">
+
+        <input type="text" id="recordId" placeholder="Record ID" readonly>
+        <input type="date" id="scanDate">
+        <input type="time" id="scanTime">
+
+        <input type="text" id="modelName" placeholder="Model Name">
+        <input type="text" id="batteryType" placeholder="Battery Type">
+
+        <select id="bikeType">
+            <option value="">Bike Type</option>
+            <option value="Lithium">Lithium</option>
+            <option value="Graphene">Graphene</option>
+        </select>
+
+        <input type="text" id="color" placeholder="Color">
+        <input type="text" id="chassisNumber" placeholder="Chassis Number">
+        <input type="text" id="motorNumber" placeholder="Motor Number">
+
+    </div>
+
+</section>
+
+<section class="buttons">
+
+    <button id="saveBtn">Save</button>
+    <button id="deleteBtn">Delete</button>
+    <button id="clearBtn">Clear</button>
+
+    <button id="prevBtn">Prev</button>
+    <button id="nextBtn">Next</button>
+
+    <button id="firstBtn">First</button>
+    <button id="lastBtn">Last</button>
+
+    <button id="searchBtn">Search</button>
+
+</section>
+
+<section class="search-area">
+    <input type="text" id="searchInput" placeholder="Search chassis / motor / ID">
+</section>
+
+<footer>
+    Muhammad Hasnain
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
